@@ -1,0 +1,33 @@
+# =============================================================================
+# clusters-app.yaml
+# ArgoCD Application that watches the INSTALL path (ClusterInstance CRs).
+# This is your equivalent of out/argocd/deployment/clusters-app.yaml from the
+# ztp-site-generate container, repointed at this repo's layout.
+#
+# The SiteConfig Operator consumes the ClusterInstance CRs that ArgoCD syncs
+# and expands them into the underlying install CRs (ManagedCluster,
+# AgentClusterInstall, BareMetalHost, InfraEnv, NMStateConfig, etc.).
+# =============================================================================
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: clusters
+  namespace: openshift-gitops
+  annotations:
+    # Resync window; matches Red Hat's reference cadence.
+    argocd.argoproj.io/sync-options: PruneLast=true
+spec:
+  project: ztp                       # create an AppProject named 'ztp' (or use default)
+  source:
+    repoURL: https://git.example.com/markd/ztp-learn.git   # <-- your repo
+    targetRevision: main                 # branch/tag the hub should track
+    path: site-configs               # install path in THIS repo
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: clusters
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

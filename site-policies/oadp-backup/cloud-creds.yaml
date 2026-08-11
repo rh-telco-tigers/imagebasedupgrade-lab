@@ -1,0 +1,11 @@
+# Reference copy of the S3 credentials Secret.
+# Delivered to managed clusters by policy-configure-oadp-dpa in oadp-dap-config.yaml.
+# Do not apply this file directly to the hub unless you also need hub-local OADP.
+apiVersion: v1
+data:
+  cloud: W2RlZmF1bHRdCmF3c19hY2Nlc3Nfa2V5X2lkID0gTXQwV1FZSWNtdGIySzM0dDFTUWkKYXdzX3NlY3JldF9hY2Nlc3Nfa2V5ID0gakdxMWZsaVV4SnNZbWZ1N2c2bFhCWDhUTjc0ZGdKbGFJQTZBcUt1Mwo=
+kind: Secret
+metadata:
+  name: cloud-credentials
+  namespace: openshift-adp
+type: Opaque

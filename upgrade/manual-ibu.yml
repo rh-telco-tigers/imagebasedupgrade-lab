@@ -1,0 +1,20 @@
+apiVersion: lca.openshift.io/v1
+kind: ImageBasedUpgrade
+metadata:
+  name: upgrade
+spec:
+  stage: Idle
+  seedImageRef:
+    version: 4.20.16
+    image: registry.example.com/ibu/seed-sno:v42016
+  #  pullSecretRef: <seed_pull_secret>
+  #autoRollbackOnFailure: {}
+  #  initMonitorTimeoutSeconds: 1800
+  #extraManifests:
+  #- name: example-extra-manifests-cm
+  #  namespace: openshift-lifecycle-agent
+  #- name: example-catalogsources-cm
+  #  namespace: openshift-lifecycle-agent
+  oadpContent:
+  - name: oadp-cm-example
+    namespace: openshift-adp

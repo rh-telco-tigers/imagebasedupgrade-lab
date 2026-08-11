@@ -1,0 +1,69 @@
+apiVersion: siteconfig.open-cluster-management.io/v1alpha1
+kind: ClusterInstance
+metadata:
+  name: "ibisno3-clusterinstance"
+  namespace: "ibisno3"
+spec:
+  clusterName: ibisno3
+  clusterImageSetNameRef: img4.18.13-x86-64-appsub
+  baseDomain: example.com
+  holdInstallation: false
+  machineNetwork:
+    - cidr: 192.168.1.0/24
+  networkType: OVNKubernetes
+  sshPublicKey: "<your ssh key>"
+  pullSecretRef:
+    name: "pullsecret-cluster-sno"
+  templateRefs:
+    - name: ibi-cluster-templates-v1
+      namespace: open-cluster-management
+  extraLabels:
+    ManagedCluster:
+      siteName: "site3"
+      group-du-sno: ""
+      common: "true"
+      du-profile: ""
+      oadpconfigure: "true"
+  cpuPartitioningMode: AllNodes
+  nodes:
+    - role: master
+      templateRefs:
+        - name: ibi-node-templates-v1
+          namespace: open-cluster-management
+      bmcCredentialsName:
+        name: "redfish-secret"
+      bmcAddress: redfish-virtualmedia://192.168.6.22:8443/redfish/v1/Systems/ibisno3
+      bootMACAddress: 00:50:56:86:a9:62
+      bootMode: UEFI
+      hostName: ibisno3
+      nodeNetwork:
+        interfaces:
+          - name: "ens33"
+            macAddress: "00:50:56:86:a9:62"
+        config:
+          interfaces:
+            - name: ens33
+              type: ethernet
+              state: up
+              ipv4:
+                enabled: true
+                address:
+                  - ip: "172.16.25.82"
+                    prefix-length: 24
+                dhcp: false
+              ipv6:
+                enabled: false
+          dns-resolver:
+             config:
+               search:
+               - example.com
+               server:
+               - 172.16.15.6
+               - 172.16.15.8
+          routes:
+            config:
+            - destination: 0.0.0.0/0
+              next-hop-interface: ens33
+              next-hop-address: 172.16.25.1
+              table-id: 254
+

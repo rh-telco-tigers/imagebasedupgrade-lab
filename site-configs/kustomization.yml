@@ -1,0 +1,31 @@
+# site-configs/kustomization.yaml
+# The clusters ArgoCD Application syncs this path. List each cluster's
+# ClusterInstance CR here. Add one entry per site as your fleet grows.
+#
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  #- threenode/namespace.yml
+  #- threenode/bmc-secret.yaml
+  #- threenode/3node.yaml
+  #- threenode/pull-secret.yaml
+  #- seedztp/namespace.yml
+  #- seedztp/bmc-secret.yaml
+  #- seedztp/pull-secret.yaml
+  #- seedztp/seedztp.yaml
+  - ibisno1/namespace.yml
+  - ibisno1/bmc-secret.yaml
+  - ibisno1/pull-secret.yaml
+  - ibisno1/ibisno1.yaml
+  - ibisno2/namespace.yml
+  - ibisno2/bmc-secret.yaml
+  - ibisno2/pull-secret.yaml
+  - ibisno2/ibisno2.yaml
+  - ibisno3/namespace.yml
+  - ibisno3/bmc-secret.yaml
+  - ibisno3/pull-secret.yaml
+  - ibisno3/ibisno3.yaml
+  - ibisno4/namespace.yml
+  - ibisno4/bmc-secret.yaml
+  - ibisno4/pull-secret.yaml
+  - ibisno4/ibisno4.yaml

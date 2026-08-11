@@ -1,0 +1,89 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-configure-oadp-dpa
+  namespace: policies
+spec:
+  remediationAction: enforce
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: config-policy-oadp-dpa
+        spec:
+          remediationAction: enforce
+          severity: high
+          # Using raw templates allows the evaluation of Hub-side variables
+          object-templates-raw: |
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  name: cloud-credentials
+                  namespace: openshift-adp
+                type: Opaque
+                data: <your cloud secret here>
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: oadp.openshift.io/v1alpha1
+                kind: DataProtectionApplication
+                metadata:
+                  name: oadp-dpa-instance
+                  namespace: openshift-adp
+                spec:
+                  configuration:
+                    velero:
+                      defaultPlugins:
+                        - aws
+                        - openshift
+                        - csi
+                    nodeAgent:
+                      enable: true
+                      uploaderType: kopia
+                      timeout: 1h
+                  backupLocations:
+                    - name: default
+                      velero:
+                        provider: aws
+                        default: true
+                        objectStorage:
+                          bucket: sno-backup-bucket
+                          # Dynamically sets the folder prefix to the target cluster's name
+                          prefix: {{hub .ManagedClusterName hub}}-backups
+                        credential:
+                          name: cloud-credentials
+                          key: cloud
+                        config:
+                          region: rustfs
+                          s3ForcePathStyle: "true"
+                          s3Url: https://s3.example.com:9445
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-configure-oadp-dpa
+  namespace: policies
+spec:
+  clusterSelector:
+    matchExpressions:
+      - key: oadpconfigure
+        operator: In
+        values:
+          - "true"
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-configure-oadp-dpa
+  namespace: policies
+placementRef:
+  apiGroup: apps.open-cluster-management.io
+  kind: PlacementRule
+  name: placement-policy-configure-oadp-dpa
+subjects:
+  - apiGroup: policy.open-cluster-management.io
+    kind: Policy
+    name: policy-configure-oadp-dpa

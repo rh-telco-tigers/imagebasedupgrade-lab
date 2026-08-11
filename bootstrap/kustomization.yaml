@@ -1,0 +1,15 @@
+# Apply both ArgoCD Applications to the hub in one shot:
+#   oc apply -k bootstrap/
+#
+# PREREQUISITE (one-time, not managed here): patch the openshift-gitops ArgoCD
+# instance with the argocd-openshift-gitops-patch.json that you extract from the
+# ztp-site-generate container. That patch installs the SiteConfig + PolicyGenerator
+# kustomize plugins and sets resource exclusions. Drop that JSON in this folder
+# and apply it manually first:
+#   oc patch argocd openshift-gitops -n openshift-gitops --type=merge \
+#     --patch-file bootstrap/argocd-openshift-gitops-patch.json
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - clusters-app.yaml
+  - policies-app.yaml

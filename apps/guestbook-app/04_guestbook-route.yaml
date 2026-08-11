@@ -1,0 +1,19 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: guestbook
+  namespace: guestbookphp
+  labels:
+    app: guestbook
+    app.kubernetes.io/part-of: guestbook
+spec:
+  to:
+    kind: Service
+    name: guestbook
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+    destinationCACertificate: ''
+  port:
+    targetPort: 8080
+  alternateBackends: []

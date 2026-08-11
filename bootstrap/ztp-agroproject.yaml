@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: ztp
+  namespace: openshift-gitops
+spec:
+  clusterResourceWhitelist:
+  - group: 'hive.openshift.io'
+    kind: ClusterImageSet
+  - group: 'cluster.open-cluster-management.io'
+    kind: ManagedCluster
+  - group: ''
+    kind: Namespace
+  description: ztp argo project
+  destinations:
+  - name: '*'
+    namespace: '*'
+    server: https://kubernetes.default.svc
+  sourceRepos:
+  - https://git.example.com/markd/ztp-learn.git # <-- your repo
+  namespaceResourceWhitelist:
+    - group: ''
+      kind: ConfigMap
+    - group: ''
+      kind: Namespace
+    - group: ''
+      kind: Secret
+    - group: 'extensions.hive.openshift.io'
+      kind: ImageClusterInstall
+    - group: 'metal3.io'
+      kind: DataImage
+    - group: 'siteconfig.open-cluster-management.io'
+      kind: ClusterInstance 
+    - group: 'policy.open-cluster-management.io'
+      kind: Policy
+    - group: 'apps.open-cluster-management.io'
+      kind: PlacementRule
+    - group: 'policy.open-cluster-management.io'
+      kind: PlacementBinding
