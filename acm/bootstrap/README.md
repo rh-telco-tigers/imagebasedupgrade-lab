@@ -12,16 +12,16 @@ podman run --log-driver=none --rm \
   extract /home/ztp --tar | tar x -C ./out420
 
 # 2. Vendor the reference CRs into this repo (see the per-dir READMEs)
-cp -r out418/source-crs/*     site-policies/source-crs/v4.18/
-cp -r out418/extra-manifest/* site-configs/reference-crs/v4.18/extra-manifests/
+cp -r out418/source-crs/*     acm/site-policies/source-crs/v4.18/
+cp -r out418/extra-manifest/* acm/site-configs/reference-crs/v4.18/extra-manifests/
 
 # 2. Vendor the reference CRs into this repo (see the per-dir READMEs)
-cp -r out420/source-crs/*     site-policies/source-crs/v4.20/
-cp -r out420/extra-manifest/* site-configs/reference-crs/v4.20/extra-manifests/
+cp -r out420/source-crs/*     acm/site-policies/source-crs/v4.20/
+cp -r out420/extra-manifest/* acm/site-configs/reference-crs/v4.20/extra-manifests/
 
 # 3. Patch the ArgoCD instance to enable the SiteConfig + PolicyGenerator plugins
 oc patch argocd openshift-gitops -n openshift-gitops --type=merge \
   --patch-file out420/argocd/deployment/argocd-openshift-gitops-patch.json
 
 # 4. Apply the two ArgoCD Applications
-oc apply -k bootstrap/
+oc apply -k acm/bootstrap/

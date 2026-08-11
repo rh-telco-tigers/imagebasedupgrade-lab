@@ -314,7 +314,7 @@ oc get managedclusters
 
 * On each target managed cluster, ensure:
   * Lifecycle Agent and OADP are installed (typically via the seed image and hub policies).
-  * The OADP backup ConfigMap referenced by the IBGU exists in `openshift-adp`. This lab expects `oadp-cm-example` (the same name as Part 1). Create it on each remaining spoke the same way you did in Part 1, or align `ibuSpec.oadpContent` if your hub policies deploy a differently named ConfigMap (for example, `site-policies` generates `oadp-cm`).
+  * The OADP backup ConfigMap `oadp-cm-example` exists in `openshift-adp` (same ConfigMap used in Part 1; hub policies under `acm/site-policies` can deploy it).
 * If you already finalized an upgrade on `ibisno1` in Part 1, either remove it from `clusterLabelSelectors` in `upgrade/ibgu-ibisno.yaml` or leave it out of this run so you are not re-upgrading a cluster that is already on the target version.
 
 ### Install Topology Aware Lifecycle Manager

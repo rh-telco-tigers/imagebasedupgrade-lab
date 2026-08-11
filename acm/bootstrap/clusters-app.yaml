@@ -21,7 +21,7 @@ spec:
   source:
     repoURL: https://git.example.com/markd/ztp-learn.git   # <-- your repo
     targetRevision: main                 # branch/tag the hub should track
-    path: site-configs               # install path in THIS repo
+    path: acm/site-configs           # install path in THIS repo
   destination:
     server: https://kubernetes.default.svc
     namespace: clusters

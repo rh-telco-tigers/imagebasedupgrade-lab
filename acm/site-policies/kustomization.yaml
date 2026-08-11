@@ -6,7 +6,7 @@ resources:
 configMapGenerator:
 - files:
     - oadp-backup/ibu-backup-configmap.yaml
-  name: oadp-cm
+  name: oadp-cm-example
   namespace: openshift-adp
 
 generatorOptions:

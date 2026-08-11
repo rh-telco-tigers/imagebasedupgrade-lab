@@ -5,7 +5,7 @@
 #
 # Requires the PolicyGenerator kustomize plugin to be enabled on the
 # openshift-gitops ArgoCD instance (done via the deployment patch you extract
-# from the ztp-site-generate container -- see bootstrap/README notes).
+# from the ztp-site-generate container -- see acm/bootstrap/README notes).
 # =============================================================================
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -17,7 +17,7 @@ spec:
   source:
     repoURL: https://git.example.com/markd/ztp-learn.git   # <-- your repo
     targetRevision: main
-    path: site-policies              # policy path in THIS repo
+    path: acm/site-policies          # policy path in THIS repo
     # The PolicyGenerator plugin runs kustomize with --enable-alpha-plugins.
     # The argocd instance patch wires this up cluster-wide; nothing needed here
     # beyond pointing at a path whose kustomization.yaml uses `generators:`.
